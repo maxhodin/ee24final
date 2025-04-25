@@ -15,7 +15,9 @@ print(data.info())
 profit_fav = [0]
 profit_und = [0]
 prev_date = data.iloc[0,0]
+day_games = 0
 for i in range(int(len(data)/2)):
+    day_games += 1
     last_index = len(profit_und) - 1
     t1odd = data.iloc[2*i, 2]
     t2odd = data.iloc[2*i + 1, 2]
@@ -36,8 +38,12 @@ for i in range(int(len(data)/2)):
             profit_und[last_index] -= 100
     if data.iloc[2*i+1,0] != prev_date:
         prev_date = data.iloc[2*i+1,0]
+        profit_fav[last_index] /= day_games
+        profit_und[last_index] /= day_games
         profit_fav.append(0)
         profit_und.append(0)
+        day_games = 0
+
 
 plt.figure()
 plt.hist(profit_fav, color="red",bins=40,label="Betting on the favorite",alpha=.80)
