@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import math
 from scipy.stats import norm
 
 def fit_gaussian(dataset):
     mean = np.mean(dataset) #uses arithmetic mean formula
     var = np.var(dataset) #uses sum of difference of mean squares formula
-    x = np.linspace(np.min(dataset), np.max(dataset), 1000)
-    return norm.pdf(x, loc=mean, scale = np.sqrt(var))
+    return norm.pdf(dataset, loc=mean, scale=math.sqrt(var))
 
 df = pd.read_excel("mlb-odds-2021.xlsx")
 #Note that, for even n, the nth + 1 team was their opponent
@@ -57,12 +57,13 @@ fig, ax1 = plt.subplots()
 ax1.hist(profit_fav, color="red",bins=40,label="Betting on the favorite",alpha=.80)
 ax1.hist(profit_und, color="blue",bins=40,label="Betting on the underdog",alpha=.80)
 ax2 = ax1.twinx()
-x = np.linspace(-1, 2, 1000)
-ax2.plot(x, fit_gaussian(profit_fav), label="Favorite Fit")
-ax2.plot(x, fit_gaussian(profit_und), label="Underdog Fit")
-ax1.set_title("Frequency of profit in 2021 season")
+x1 = np.linspace(min(profit_fav), max(profit_fav), 1000)
+x2 = np.linspace(min(profit_und), max(profit_und), 1000)
+ax2.plot(x1, fit_gaussian(x1), label="Favorite Fit")
+ax2.plot(x2, fit_gaussian(x2), label="Underdog Fit")
+ax1.set_title("Frequency of profit in 2010-2021 season")
 ax1.set_xlabel("Expected profit per game bet on, daily")
-ax1.set_xlim(-1, 2)
-ax2.set_xlim(-1, 2)
+ax1.set_xlim(-1.5, 2)
+ax2.set_xlim(-1.5, 2)
 plt.legend()
 plt.savefig("ee24finalprojectplot1")
