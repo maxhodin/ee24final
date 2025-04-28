@@ -34,18 +34,18 @@ for i in range(int(len(data)/2)):
     #case that team 1 wins
     if data.iloc[2*i,1] > data.iloc[2*i + 1,1]:
         if t1odd > 0: #t1 is the underdog
-            profit_und[last_index] += t1odd /100
-            profit_fav[last_index] -= 1
+            profit_und[last_index] += t1odd
+            profit_fav[last_index] -= 100
         else: #t1 was the favorite
-            profit_fav[last_index] -= 100 / t1odd #subtract due to negative sign
-            profit_und[last_index] -= 1
+            profit_fav[last_index] -= 10000 / t1odd #subtract due to negative sign
+            profit_und[last_index] -= 100
     else:
         if t2odd > 0: #t2 is the underdog
-            profit_und[last_index] += t2odd /100
-            profit_fav[last_index] -= 1
+            profit_und[last_index] += t2odd
+            profit_fav[last_index] -= 100
         else: #t2 was the favorite
-            profit_fav[last_index] -= 100 / t2odd #subtract due to negative sign
-            profit_und[last_index] -= 1
+            profit_fav[last_index] -= 10000 / t2odd #subtract due to negative sign
+            profit_und[last_index] -= 100
     if data.iloc[2*i+1,0] != prev_date:
         prev_date = data.iloc[2*i+1,0]
         profit_fav[last_index] /= day_games
@@ -65,9 +65,9 @@ x2 = np.linspace(min(profit_und), max(profit_und), 2266)
 ax2.plot(x1, fit_gaussian(profit_fav), label="Favorite Fit",color="red")
 ax2.plot(x2, fit_gaussian(profit_und), label="Underdog Fit",color="blue")
 ax1.set_title("Frequency of profit in 2010-2021 season")
-ax1.set_xlabel("Expected profit per game bet on, daily")
-ax1.set_xlim(-1, 2)
-ax2.set_xlim(-1, 2)
+ax1.set_xlabel("Expected percent profit per game bet on, daily")
+ax1.set_xlim(-100, 200)
+ax2.set_xlim(-100, 200)
 ax1.legend()
 ax2.legend(loc="upper left")
 ax1.set_ylabel("Frequency")
